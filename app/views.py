@@ -10,6 +10,9 @@ from app.forms import UserForm
 def home(request):
     return HttpResponse("This is the login Page")
 
+def get_emotion(request):
+    return HttpResponse("Get the Emotion page")
+
 def signupPage(request):
     form = UserForm()
     if request.method == 'POST':
