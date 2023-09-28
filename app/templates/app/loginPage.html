@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+<!-- css Content -->
+
+{% block custom_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+{% endblock%}
+
+<!-- Main Content -->
+
+{% block content %}
+
+<div class="container">
+    <div class="body d-md-flex align-items-center justify-content-between" style="height: 480px;width: 720px">
+        <div class="box-1 mt-md-0 mt-5">
+            <img src="https://images.pexels.com/photos/2033997/pexels-photo-2033997.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500">
+        </div>
+            
+        <div class=" box-2 d-flex flex-column h-100">
+            <div class="row">
+                <div class="m-2 mt-4">
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            
+                            <div class="mt-5">
+                                <p class="mb-1 h-1">Hello,Again </p>
+                                <p class="text-muted mb-1">Sign in to listening the Songs.</p>
+                            </div>
+                            <hr>
+
+                            <div class="form-group">
+                                <label for="">Username : </label>
+                                <input type="text" class="form-control my-2" name="username" placeholder="Enter username">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Password : </label>
+                                <input type="password" class = "form-control my-2" name = "password" placeholder = "Enter password">
+                            </div>
+
+
+                            <button type="submit" class="btn float-end shadow btn-success px-4">Login</button>
+                        </form>
+                    </div>                     
+                </div>
+            </div>
+        </div>     
+    </div>
+</div>
+
+{% endblock %}
