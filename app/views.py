@@ -14,65 +14,96 @@ model = tf.keras.models.load_model('./models/final_model_V3.h5')
 
 # Create your views here.
 
-def home(request):
-    
-    emotion = request.session.get('e')
+def home(request):     
     return render(request, "homepage/homepage.html")
 
+def image2emotion(captured_image):
+    
+    emotionNumber = None
+    
+    if captured_image:
+        
+        captured_image_data = base64.b64decode(captured_image.split(',')[1])
+        nparr = np.frombuffer(captured_image_data, np.uint8)
+
+        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        faces = faceCascade.detectMultiScale(gray, 1.1, 4)
+        
+        # Initialize face_roi outside the loop
+        face_roi = None
+        
+        for x, y, w, h in faces:
+            roi_gray = gray[y:y+h, x:x+w]
+            roi_color = image[y:y+h, x:x+w]
+            cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)  # BGR
+            faces = faceCascade.detectMultiScale(roi_gray)
+            if len(faces) == 0:
+                print("Face not detected")
+            else:
+                for (ex, ey, ew, eh) in faces:
+                    face_roi = roi_color[ey:ey+eh, ex:ex+ew]
+        
+        if face_roi is not None:
+            final_image = cv2.resize(face_roi, (48, 48))
+            final_image = np.expand_dims(final_image, axis=0)
+            final_image = final_image / 255.0
+
+            predict_emotion = model.predict(final_image)
+            emotionNumber = int(np.argmax(predict_emotion))
+    
+    return emotionNumber
 
 def predict_emotion(request):
     
     if request.method == 'POST':
         captured_image_base64 = request.POST.get('captured_image', '')
-        if captured_image_base64:
-            # Decode the base64 image data
-            captured_image_data = base64.b64decode(captured_image_base64.split(',')[1])
-
-            # Convert the image data to a numpy array
-            nparr = np.frombuffer(captured_image_data, np.uint8)
-
-            # Decode the image using OpenCV
-            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-            # convert the image in to gray image
-            faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            
-            faces = faceCascade.detectMultiScale(gray, 1.1, 4)
-            
-            # Initialize face_roi outside the loop
-            face_roi = None
-            
-            for x, y, w, h in faces:
-                roi_gray = gray[y:y+h, x:x+w]
-                roi_color = image[y:y+h, x:x+w]
-                cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)  # BGR
-                faces = faceCascade.detectMultiScale(roi_gray)
-                if len(faces) == 0:
-                    print("Face not detected")
-                else:
-                    for (ex, ey, ew, eh) in faces:
-                        face_roi = roi_color[ey:ey+eh, ex:ex+ew]
-            
-            if face_roi is not None:
-                final_image = cv2.resize(face_roi, (48, 48))
-                final_image = np.expand_dims(final_image, axis=0)
-                final_image = final_image / 255.0
-
-                predict_emotion = model.predict(final_image)
-                int_prediction = np.argmax(predict_emotion)
-
-                # labels = {0: 'Angry', 1: 'Happy', 2: 'Sad', 3: 'Neutral'}
-
-                # emotion = labels[int_prediction]
+        
+        emotion = image2emotion(captured_image_base64) 
+        
+        if emotion is not None:  
+             
+            if emotion == 0: # angry
                 
-                request.session['emotion'] = int_prediction
+                calmandsoothingSongs = Song.objects.filter(labels = 0)
+                context = {
+                    "emotion" : "Angry",
+                    "sad_songs" : calmandsoothingSongs
+                }  
                 
-                return render(request, 'homepage/homepage.html')
-            else:
-                return JsonResponse({'error': 'Face not detected'})
-
-    return render(request, 'predict_emotion.html')
+            if emotion == 1:
+                
+                happy_songs = Song.objects.filter(labels = 0)
+                context = {
+                    "emotion" : "Happy",
+                    "sad_songs" : happy_songs
+                }    
+                
+            if emotion == 2:
+                
+                sadandSoothingSong = Song.objects.filter(labels = 0)
+                context = {
+                    "emotion" : "Sad",
+                    "sad_songs" : sadandSoothingSong
+                }  
+                
+            if emotion == 3:
+                
+                energeticSong = Song.objects.filter(labels = 0)
+                context = {
+                    "emotion" : "Neutral",
+                    "sad_songs" : energeticSong
+                }   
+            
+            
+            return render(request, 'homepage/homepage.html', context)
+        
+        else:
+            return JsonResponse({'error': 'Face not detected'})
+            
+    return render(request, 'prediction/predict_emotion.html')
 
 
 ########### User Authentication #########################3
