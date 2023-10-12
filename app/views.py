@@ -7,10 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from app.forms import UserForm
 from .model import Song
 from .emotionRecognition import ImageEmotionAnalyzer
-from .spotify import SpotifyClient
-
-SPOTIFY_CLIENT_ID = ""
-SPOTIFY_CLIENT_SECRET = ""
+from .songList import SongListManager
 
 
 
@@ -22,48 +19,18 @@ def predict_emotion(request):
     if request.method == 'POST':
         captured_image_base64 = request.POST.get('captured_image', '')
         # get emotion as a number
-        emotion = ImageEmotionAnalyzer(captured_image_base64)  
+        getEmotion = ImageEmotionAnalyzer(captured_image_base64)  
+        emotion = int(getEmotion.image2emotion())
         # if emtion is available
         if emotion is not None:  
+                
+            getContext = SongListManager(emotion)  
+            context = getContext.create_playlist() 
             
-            spotify_client = SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
-             
-            if emotion == 0: # angry
-                
-                calmSongs = Song.objects.filter(labels = 0).values_list('uri',flat=True)
-                
-                context = {
-                    "emotion" : "Angry",
-                    "sad_songs" : calmSongs
-                }  
-                
-            if emotion == 1: # happy
-                
-                happy_songs = Song.objects.filter(labels = 0)
-                context = {
-                    "emotion" : "Happy",
-                    "sad_songs" : happy_songs
-                }    
-                
-            if emotion == 2:
-                
-                sadandSoothingSong = Song.objects.filter(labels = 0)
-                context = {
-                    "emotion" : "Sad",
-                    "sad_songs" : sadandSoothingSong
-                }  
-                
-            if emotion == 3:
-                
-                energeticSong = Song.objects.filter(labels = 0)
-                context = {
-                    "emotion" : "Neutral",
-                    "sad_songs" : energeticSong
-                }   
-            
+            print(context) 
             
             return render(request, 'homepage/homepage.html', context)
-        # if emotion is not available
+
         else:
             return JsonResponse({'error': 'Face not detected'})
             

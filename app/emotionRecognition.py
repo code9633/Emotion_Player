@@ -3,7 +3,7 @@ import cv2
 import base64
 import tensorflow as tf
 
-model = tf.keras.models.load_model('./models/final_model_V3.h5')
+model = tf.keras.models.load_model('./models/CNND_VD01.h5')
 
 class ImageEmotionAnalyzer:
     
@@ -45,6 +45,6 @@ class ImageEmotionAnalyzer:
                 final_image = final_image / 255.0
 
                 predict_emotion = model.predict(final_image)
-                emotionNumber = int(np.argmax(predict_emotion))
+                emotionNumber = np.argmax(predict_emotion)
         
         return emotionNumber
