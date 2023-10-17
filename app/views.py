@@ -5,10 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 
 
 from app.forms import UserForm
-from .model import Song
-from .emotionRecognition import ImageEmotionAnalyzer
+from .imageEmotion import ImageEmotionAnalyzer
 from .songList import SongListManager
-
 
 
 def home(request):     
@@ -20,14 +18,15 @@ def predict_emotion(request):
         captured_image_base64 = request.POST.get('captured_image', '')
         # get emotion as a number
         getEmotion = ImageEmotionAnalyzer(captured_image_base64)  
-        emotion = int(getEmotion.image2emotion())
+        emotion = getEmotion.image2emotion()
+        
         # if emtion is available
         if emotion is not None:  
-                
-            getContext = SongListManager(emotion)  
-            context = getContext.create_playlist() 
             
-            print(context) 
+            emotion = int(emotion)
+            getContext = SongListManager(emotion)  
+            context = getContext.create_playlist()
+            
             
             return render(request, 'homepage/homepage.html', context)
 
