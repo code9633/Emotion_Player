@@ -46,5 +46,7 @@ class ImageEmotionAnalyzer:
 
                 predict_emotion = model.predict(final_image)
                 emotionNumber = np.argmax(predict_emotion)
+                
+        print("Emtion number is ", emotionNumber)
         
         return emotionNumber
