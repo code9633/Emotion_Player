@@ -25,7 +25,7 @@ def predict_emotion(request):
             
             emotion = int(emotion)
             getContext = SongListManager(emotion)  
-            context = getContext.create_playlist()
+            context = getContext.createPlayList()
             
             
             return render(request, 'homepage/homepage.html', context)
