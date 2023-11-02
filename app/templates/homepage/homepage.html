@@ -27,16 +27,16 @@
                 </div>
 
                 <div class="song_side">
-                    <nav>
-                        <!-- <div class="user">
+                    <!-- <nav>
+                     <div class="user">
                             <img src="images/user.png" alt="">
                         </div> -->
 
-                        <div class="search">
+                        <!-- <div class="search">
                             <i class='bx bx-search-alt'></i>
                             <input type="text" placeholder="Search Music..">
-                        </div>  
-                    </nav>
+                        </div>   
+                    </nav> -->
 
                     <div class="content">
                         <h2>You are in 
@@ -44,6 +44,11 @@
                         </h2> 
                         
                         <p>"{{ quotes }}"</p>
+
+                        <div class="search">
+                            <i class='bx bx-search-alt'></i>
+                            <input type="text" placeholder="Search Music..">
+                        </div>
 
                     </div>
 
@@ -64,12 +69,12 @@
                             <li class="songItem">
                                 <div class="img-play ">
                                     <img src="{{ song.cover_image }}">
-                                    <i class='bx bx-play-circle' id="1" ></i> 
+                                    <i class='bx playListPlay bx-play-circle' ></i> 
                                 </div>
                                 
-                                <h5>{{ song.song_name }}<br>
+                                <h4>{{ song.song_name }}<br>
                                     <div class="subtitle">{{ song.artist_name }}</div>
-                                </h5>    
+                                </h4>    
                             </li>
 
                             {% endif %}
@@ -96,9 +101,9 @@
                                     <i class='bx bx-play-circle' id="1" ></i> 
                                 </div>
                                 
-                                <h5>{{song.song_name}} <br>
+                                <h4>{{song.song_name}} <br>
                                     <div class="subtitle">{{song.artist_name}}</div>
-                                </h5>    
+                                </h4>    
                             </li>
                             {% endif %}
                             {% endfor %}
