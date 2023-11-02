@@ -26,7 +26,7 @@ Before you get started, make sure you have the following prerequisites:
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/yourusername/your-repo-name.git
+   https://github.com/code9633/Emotion_Player_Django_AI.git
 # Facial Emotion Recognition Music Recommendation System
 
 ## Usage
