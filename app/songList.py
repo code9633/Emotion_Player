@@ -35,11 +35,13 @@ class SongListManager:
             uri = song['uri']
             track_info = spotify_client.track(uri)
             songName = track_info['name']
+            previewUrl = track_info['preview_url']
             artistName = track_info['artists'][0]["name"]
             coverImageUrl = track_info['album']['images'][0]['url']  
             
             song_info.append({
                 'song_name' : songName ,
+                "previewUrl" : previewUrl,
                 'artist_name' : artistName ,
                 'cover_image' : coverImageUrl  
             })
@@ -54,7 +56,7 @@ class SongListManager:
         emotionSongsInfo = self.getSongInfo(emotionSongs) 
         allSongsInfo = self.getSongInfo(allSongs) 
          
-        labels = {0:"Angry", 1:"happy", 2: "Sad", 3 : "Neutral"}
+        labels = {0:"Angry", 1:"Happy", 2: "Sad", 3 : "Neutral"}
             
         context = {
             'emotion': labels[self.label],
@@ -64,55 +66,4 @@ class SongListManager:
         
         return context
         
-            
-            
- # def create_playlist(self):
-    #     spotify_client = SpotifyClient()
         
-    #     songs = Song.objects.filter(labels = int(self.label)).values_list("uri", flat = True)
-    #     print("sonngs", songs)
-        
-    #     # initialize lists to store song infomation
-    #     song_info = []
-        
-    #     for uri in songs:
-    #         track_info = spotify_client.track(uri)
-    #         song_name = track_info['name']
-    #         artist_name = track_info['artist'][0]['name']
-    #         cover_image_url = track_info['album']['images'][0]['url']
-            
-    #         song_info.append({
-    #             'song_name' : song_name,
-    #             'artist_name' : artist_name,
-    #             'cover_image_url' : cover_image_url
-    #         })  
-    
-    #   class SongListManager:
-
-    # def __init__(self, label):
-    #     self.label = label
-    #     self.songs = []
-
-    # def add_song(self, song):
-    #     self.songs.append(song)
-
-    # def delete_song(self, song):
-    #     self.songs.remove(song)
-
-    # def get_songs(self):
-    #     return self.songs
-
-    # def load_songs_from_csv(self, file_path):
-    #     with open(file_path, 'r') as csvfile:
-    #         reader = csv.reader(csvfile)
-    #         next(reader) # skip header row
-    #         for row in reader:
-    #             song = Song(row[0], row[1], row[2])
-    #             self.add_song(song)
-
-    # def save_songs_to_csv(self, file_path):
-    #     with open(file_path, 'w') as csvfile:
-    #         writer = csv.writer(csvfile)
-    #         writer.writerow(['title', 'artist', 'duration'])
-    #         for song in self.songs:
-    #             writer.writerow([song.title, song.artist, song.duration])

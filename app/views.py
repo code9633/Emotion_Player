@@ -4,9 +4,11 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
 
+
 from app.forms import UserForm
 from .imageEmotion import ImageEmotionAnalyzer
 from .songList import SongListManager
+from .emoji import EmojiSelector
 
 
 def home(request):     
@@ -26,6 +28,11 @@ def predict_emotion(request):
             emotion = int(emotion)
             getContext = SongListManager(emotion)  
             context = getContext.createPlayList()
+            
+            getEmoji = EmojiSelector(emotion)
+            contextEmoji = getEmoji.selectEmoji()
+            
+            context.update(contextEmoji)
             
             
             return render(request, 'homepage/homepage.html', context)
