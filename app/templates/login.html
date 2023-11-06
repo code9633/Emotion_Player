@@ -1,0 +1,62 @@
+{%extends 'public/index.html'%}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/public/main.css' %}">
+{% endblock %}
+
+
+{%block content%}
+    <div class="forms-container">
+        <div class="signin-signup">
+
+            <form class="sign-in-form" method="POST">
+                {% csrf_token %}
+
+                <h2 class="title">Sign in</h2>
+
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    
+                    {{ loginForm.username }}
+                </div>
+                
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    
+                    {{ loginForm.password }}
+                </div>
+
+                <input type="submit" value="Login" class="btn solid" />
+
+                <p class="social-text">Or Sign in with social platforms</p>
+
+                <!-- Social media Sign in  -->
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="{% url 'social:begin' 'google-oauth2' %}" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="panels-container">
+        <div class="panel left-panel">
+            <div class="content">
+                <h3>New here ?</h3>
+                <p> "Unlock personalized playlists with your emotions. Sign up for a musical journey that understands how you feel. Join us now!"</p>
+                <form action="{% url 'register'%}">
+                    <button class="btn transparent" id="sign-up-btn"> Sign up </button>
+                </form>
+                  
+            </div>
+            {% load static%}
+            <img src="{% static 'images/login.svg'%}" class="image" alt="" />
+        </div>
+    </div>
+{% endblock %}
+

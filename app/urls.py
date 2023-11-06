@@ -1,11 +1,14 @@
-from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    path('', views.home, name= 'home'),
-    path('predict/',views.predict_emotion, name = "predict"),
-    # path('result/<str:emotion>/', views.result, name= 'result'),
-    path('signup/', views.signupPage , name="signupPage"),
-    path('login/', views.loginPage, name= "loginPage"),
-    path('logout/', views.logout, name="logout"),
+    path('', views.home, name="home"),
+    path('userLogin/', views.userLogin, name = "login"),
+    path('userRegister/', views.userRegistration, name = "register"),
+    path('logout/', auth_views.LogoutView.as_view(), name= "logout"),
+    path('social-auth/', include('social_django.urls', namespace='social') ),
+    path('camera/', views.getEmotion, name = "camera"),
+    
 ]
+ 

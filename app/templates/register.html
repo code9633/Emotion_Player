@@ -1,0 +1,96 @@
+{%extends 'public/index.html'%}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/public/main.css'%}">
+{% endblock %}
+
+{%block content%}
+
+    <div class="forms-container">
+        <div class="signin-signup">
+
+            <form action="" class="sign-in-form" method="POST">
+                {% csrf_token %}
+
+                <h2 class="title">Sign up</h2>
+
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                      
+                    {{ registrationForm.username }}
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+
+                    {{ registrationForm.email }}
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    
+                    {{ registrationForm.password1 }}
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    
+                    {{ registrationForm.password2 }}
+                </div>
+
+                {% if registrationForm.errors %}
+                <div class="custom-field">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div class="custom-field-text">
+
+                        {% if registrationForm.errors.username %}
+                        <label class="text-danger">{{registrationForm.errors.username}}</label>
+                        {% endif %}
+
+                        {% if registrationForm.errors.email %}
+                            <label class="text-danger">{{registrationForm.errors.username}}</label>
+                        {% endif %}
+                        {% if registrationForm.errors.password1 %}
+                            <label class="text-danger">{{registrationForm.errors.password1}}</label>
+                        {% endif %}
+                        {% if registrationForm.errors.password2 %}
+                            <label class="text-danger">{{registrationForm.errors.password2}}</label>
+                        {% endif %}
+
+                    </div>
+                </div>
+                {% endif %}
+
+                <input type="submit" class="btn" value="Sign up" />
+                <p class="social-text">Or Sign up with social platforms</p>
+                <div class="social-media">
+                    
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                        </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="panels-container">
+        <div class="panel left-panel">
+            <div class="content">
+                <h3>One of us ?</h3>
+                <p> "Reconnect with your emotions through music. Sign in to continue your emotional playlist journey. Let's dive in together."</p>
+                <form action="{% url 'login' %}">
+                    <button class="btn transparent" id="sign-up-btn"> Sign in </button>
+                </form>    
+            </div>
+            {% load static%}
+            <img src="{% static 'images/register.svg'%}" class="image" alt="" />
+        </div>
+    </div>
+
+{% endblock %}
+

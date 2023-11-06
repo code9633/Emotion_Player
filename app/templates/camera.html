@@ -1,0 +1,56 @@
+{% extends 'public/index.html'%}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/camera.css' %}">
+<link rel="stylesheet" href="{% static 'css/public/main.css' %}">
+{% endblock %}
+    
+{% block content %}
+
+    <div class="forms-container">
+        <div class="signin-signup">
+            <div class="sub-container">
+                <div class="card m-4" style="width:28rem;height:34rem">
+                    <video class="card-img-top" id="webcam-feed" autoplay></video>
+    
+                    <div class="card-body">
+                        <!-- <h5 class="card-title">What's your Emotion</h5> -->
+                        <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                        <i class="fa-solid fa-face-smile fa-2xl" style="color: #ed8e07;"></i>
+                        <i class="fa-solid fa-face-sad-tear fa-2xl" style="color: #ed8e07;"></i>
+                        <i class="fa-solid fa-face-angry fa-2xl" style="color: #ed8e07;"></i>
+                        <i class="fa-solid fa-face-meh-blank fa-2xl" style="color: #ed8e07;"></i>
+    
+                        <form method="post" enctype="multipart/form-data" action="{% url 'camera' %}">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-primary" value="Predict Emotion" id="capture-button">
+                            <input type="hidden" name="captured_image" id="captured-image">
+                        </form>
+    
+                    </div>
+                    <div>
+                        <label>{{ error }}</label>
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </div>
+
+    <div class="panels-container">
+        <div class="panel left-panel">
+            <div class="content">
+                <h3>Let's See Emotion ?</h3>
+                <p> "Unlock personalized playlists with your emotions. Sign up for a musical journey that understands how you feel. Join us now!"</p>   
+            </div>
+            {% load static%}
+            <img src="{% static 'images/login.svg'%}" class="image" alt="" />
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/camera.js'%}"></script>
+{% endblock %}
+    
