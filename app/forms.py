@@ -9,7 +9,7 @@ class UserRegistrationForm(UserCreationForm):
         "placeholder" : "Username"
     }))
     
-    email = forms.CharField(widget= forms.TextInput(attrs={
+    email = forms.CharField(widget= forms.EmailInput(attrs={
         "class" : "input",
         "placeholder" : "Email"
     }))

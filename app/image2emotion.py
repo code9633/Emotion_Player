@@ -3,7 +3,7 @@ import cv2
 import base64
 import tensorflow as tf
 
-model = tf.keras.models.load_model('./CNNmodel/CNND_VD01.h5')
+model = tf.keras.models.load_model('./Utilities/CNNmodel/CNND_VD01.h5')
 
 class ImageEmotionAnalyzer:
     

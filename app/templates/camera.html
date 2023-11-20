@@ -29,7 +29,7 @@
                         </div>
                        
     
-                        <form method="post" enctype="multipart/form-data" action="{% url 'camera' %}">
+                        <form method="post" enctype="multipart/form-data" >
                             {% csrf_token %}
                             <input type="submit" class="btn btn-primary" value="Predict Emotion" id="capture-button">
                             <input type="hidden" name="captured_image" id="captured-image">
@@ -48,10 +48,10 @@
         <div class="panel left-panel">
             <div class="content">
                 <h3>Let's See Emotion ?</h3>
-                <p> "Unlock personalized playlists with your emotions. Sign up for a musical journey that understands how you feel. Join us now!"</p>   
+                <p> "The song's melody radiates joy, uplifting spirits and inspiring positive emotions with its harmonious and enchanting composition."</p>   
             </div>
             {% load static%}
-            <img src="{% static 'images/login.svg'%}" class="image" alt="" />
+            <img src="{% static 'images/face.svg'%}" class="image" alt="" />
         </div>
     </div>
     

@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
+{% extends 'public/index.html'%}
 
+{% block css %}
+{% load static %}
+{% endblock %}
+
+{% block content %}
     <h4> Welcome {{user.username}}</h4>
-    <form action="{% url 'logout' %}">
+    <form action="{% url 'login' %}">
         <input type="submit" value="Logout">
     </form>
-</body> 
-</html>
+{% endblock %}
+
+
+{% block script %}
+ 
+{% endblock %}
