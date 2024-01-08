@@ -2,26 +2,19 @@ let mood, audio, playbtn, nextbtn, prevbtn, mutebtn, seekslider, volumeslider, s
     curtimetext, durtimetext, current_song, dir, playlist, ext, agent, repeat, setvolume, angry_playlist, angry_title,
     angry_poster, happy_playlist, happy_title, happy_poster, calm_playlist, calm_title, calm_poster, sad_playlist,
     sad_title, sad_poster, playlist_index;
+    
+    
 
-dir = "Media/songs/"
+dir = "Media/"
 
-angry_playlist = ["ACDC-BackinBlack", "OhTheLarceny-ManonaMission", "LedZeppelin-ImmigrantSong"];
-angry_title = ["ACDC - Back in Black", "Oh The Larceny - Man on a Mission", "Led Zeppelin - Immigrant Song"];
-angry_poster = ["static/song_imgs/back_in_black.jpg", "static/song_imgs/man_on_a_mission.jpg", "static/song_imgs/immigrant_song.jpg"];
+playlist = [];
+title = [];
+poster = [];
 
-happy_playlist = ["WillPharrell-Happy", "Kool&TheGang-Celebration", "RickAstley-NeverGonnaGiveYouUp"];
-happy_title = ["Will Pharrell - Happy", "Kool & The Gang - Celebration", "Rick Astley - Never Gonna Give You Up"];
-happy_poster = ["static/song_imgs/happy.jpg", "static/song_imgs/celebration.jpg", "static/song_imgs/never_gonna_give_you_up.jpg"];
+console.log(playlist)
 
-calm_playlist = ["SmashMouth-AllStar", "DJOkawari-SpeedofLight", "BillieEilish-BadGuy"];
-calm_title = ["Smash Mouth - All Star", "DJ Okawari - Speed of Light", "Billie Eilish - Bad Guy"];
-calm_poster = ["static/song_imgs/all_star.jpeg", "static/song_imgs/speed_of_light.jpg", "static/song_imgs/bad_guy.jpg"];
 
-sad_playlist = ["Adele-Hello", "CelineDion-MyHeartWillGoOn", "GaryJules-MadWorld"];
-sad_title = ["Adele - Hello", "Celine Dion - My Heart Will Go On", "Gary Jules - Mad World"];
-sad_poster = ["static/song_imgs/hello.JPG", "static/song_imgs/my_heart_will_go_on.jpg", "static/song_imgs/mad_world.jpg"];
 
-ext = ".mp3";
 agent = navigator.userAgent.toLowerCase()
 
 playbtn = document.getElementById("playpausebtn");
@@ -72,31 +65,11 @@ repeat.addEventListener("click", loop);
 
 function fetchMusicDetails(mood) {
     $("#playpausebtn img").attr("src", "static/images/pause.png");
-    switch (mood) {
-        case "Angry":
-            $("#circle-image img").attr("src", angry_poster[playlist_index]);
-            current_song.innerHTML = angry_title[playlist_index];
-            audio.src = dir + angry_playlist[playlist_index] + ext;
-            break;
+ 
+    $("#circle-image img").attr("src", poster[playlist_index]);
+    current_song.innerHTML = title[playlist_index];
+    audio.src = dir + playlist[playlist_index] 
 
-        case "Happy":
-            $("#circle-image img").attr("src", happy_poster[playlist_index]);
-            current_song.innerHTML = happy_title[playlist_index];
-            audio.src = dir + happy_playlist[playlist_index] + ext;
-            break;
-
-        case "Calm":
-            $("#circle-image img").attr("src", calm_poster[playlist_index]);
-            current_song.innerHTML = calm_title[playlist_index];
-            audio.src = dir + calm_playlist[playlist_index] + ext;
-            break;
-
-        case "Sad":
-            $("#circle-image img").attr("src", sad_poster[playlist_index]);
-            current_song.innerHTML = sad_title[playlist_index];
-            audio.src = dir + sad_playlist[playlist_index] + ext;
-            break;
-    }
     audio.play();
 }
 
@@ -112,55 +85,20 @@ function playPause() {
 
 function nextSong(mood) {
     playlist_index++;
-    switch (mood) {
-        case "Angry":
-            if (playlist_index > angry_playlist.length - 1) {
-                playlist_index = 0;
-            }
-            break;
-        case "Happy":
-            if (playlist_index > happy_playlist.length - 1) {
-                playlist_index = 0;
-            }
-            break;
-        case "Calm":
-            if (playlist_index > calm_playlist.length - 1) {
-                playlist_index = 0;
-            }
-            break;
-        case "Sad":
-            if (playlist_index > sad_playlist.length - 1) {
-                playlist_index = 0;
-            }
-            break;
+ 
+    if (playlist_index > playlist.length - 1) {
+        playlist_index = 0;
     }
     fetchMusicDetails(mood);
 }
 
 function prevSong(mood) {
     playlist_index--;
-    switch (mood) {
-        case "Angry":
-            if (playlist_index < 0) {
-                playlist_index = angry_playlist.length - 1;
-            }
-            break;
-        case "Happy":
-            if (playlist_index < 0) {
-                playlist_index = happy_playlist.length - 1;
-            }
-            break;
-        case "Calm":
-            if (playlist_index < 0) {
-                playlist_index = calm_playlist.length - 1;
-            }
-            break;
-        case "Sad":
-            if (playlist_index < 0) {
-                playlist_index = sad_playlist.length - 1;
-            }
-            break;
+ 
+    if (playlist_index < 0) {
+        playlist_index = playlist.length - 1;
     }
+            
     fetchMusicDetails(mood);
 }
 
@@ -219,36 +157,13 @@ function seektimeupdate() {
 }
 
 function switchTrack(mood) {
-    switch (mood) {
-        case "Angry":
-            if (playlist_index == angry_playlist.length - 1) {
-                playlist_index = 0;
-            } else {
-                playlist_index++;
-            }
-            break;
-        case "Happy":
-            if (playlist_index == happy_playlist.length - 1) {
-                playlist_index = 0;
-            } else {
-                playlist_index++;
-            }
-            break;
-        case "Calm":
-            if (playlist_index == calm_playlist.length - 1) {
-                playlist_index = 0;
-            } else {
-                playlist_index++;
-            }
-            break;
-        case "Sad":
-            if (playlist_index == sad_playlist.length - 1) {
-                playlist_index = 0;
-            } else {
-                playlist_index++;
-            }
-            break;
+   
+    if (playlist_index == playlist.length - 1) {
+        playlist_index = 0;
+    } else {
+        playlist_index++;
     }
+
     fetchMusicDetails(mood);
 }
 
@@ -286,7 +201,6 @@ const getExpression = () => {
             // Fetch Music details from the database based on the mood
 
             fetchMusicDetailsFromDatabase(mood)
-
             
         });
     });
@@ -295,12 +209,35 @@ const getExpression = () => {
 // function to fetch music details from the database
 
 const fetchMusicDetailsFromDatabase = (mood) =>{
-    mood = mood.toLowerCase()
 
-    fetch(`/get_music_details?mood=${mood}`)
+    fetch(`/get_music_details?mood=${mood.toLowerCase()}`)
     .then(response => response.json())
     .then(data =>{
         console.log(data)
+
+        // clear existing arrays
+        playlist.length = 0
+        title.length = 0
+        poster.length = 0
+
+        // populate arrays with new data
+        
+        data.forEach(song =>{
+            playlist.push(song.audioFile)
+            title.push(song.songName)
+            poster.push(song.coverImage)
+        })
+
+        // Update UI with fetched data ( Modify as needed )
+        // playlist_index = 0;
+        // audio.src = dir + data[playlist_index].audioFile;
+        // current_song.innerHTML = data[playlist_index].songName;
+        // $("#circle-image img").attr("src", data[playlist_index].coverImage);
+
+        //fetch and play the first song
+        playlist_index = 0
+        fetchMusicDetails(mood)
+
     })
     .catch(error => console.error("Error fetching music details: ", error))
 }
