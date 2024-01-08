@@ -23,7 +23,7 @@ def userRegistration(request):
                 return redirect('login')
 
             except Exception as e:
-                messages.error(request, 'Error during registration: ' + str(e))
+                messages.error(request, 'Error during registration: ' )
 
     return render(request, 'register.html', {
         'registrationForm': registrationForm,
@@ -48,7 +48,7 @@ def userLogin(request):
                 return redirect('/')
 
             except Exception as e:
-                messages.error(request, 'Error during login: ' + str(e))
+                messages.error(request, 'Error during login: ')
         else:
             messages.error(request, "Invalid Username and Password")
             return render(request, 'login.html', {
@@ -75,9 +75,20 @@ def expression(request):
 
 def get_music_details(request):
     mood = request.GET.get('mood','')
-    songs = Songs.objects.filter(emotion = mood).values(
-        'id', 'songName', 'artist', 'coverImage', 'audioFile', 'duration'
-    )
+    songs = ""
+    
+    emotionMapping = {
+        'happy' : ['happy', 'bright', 'fun'],
+        'angry' : ['angry', 'aggressive'],
+        'sad' : ['sad', 'bitter'],
+        'neutral' :['lonely', 'energetic']
+    }
+    
+    if mood in emotionMapping:
+        emotionList = emotionMapping[mood]
+        songs = Songs.objects.filter(emotion__in = emotionList).values(
+            'id', 'songName', 'artist', 'coverImage', 'audioFile', 'duration'
+        )
     return JsonResponse(list(songs), safe=False)
 
 @login_required

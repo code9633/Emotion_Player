@@ -22,7 +22,6 @@ nextbtn = document.getElementById("nextbtn");
 prevbtn = document.getElementById("prevbtn");
 mutebtn = document.getElementById("mutebtn");
 seekslider = document.getElementById("seekslider");
-volumeslider = document.getElementById("volumeslider");
 curtimetext = document.getElementById("curtimetext");
 durtimetext = document.getElementById("durtimetext");
 current_song = document.getElementById("current_song");
@@ -53,7 +52,6 @@ seekslider.addEventListener("mousemove", function (event) {
 seekslider.addEventListener("mouseup", function () {
     seeking = false;
 })
-volumeslider.addEventListener("mousemove", setvolume);
 audio.addEventListener("timeupdate", function () {
     seektimeupdate();
 })
@@ -122,10 +120,6 @@ function seek(event) {
             audio.currentTime = seekto;
         }
     }
-}
-
-function setVolume() {
-    audio.volume = volumeslider.value / 100;
 }
 
 function seektimeupdate() {
@@ -202,6 +196,9 @@ const getExpression = () => {
 
             fetchMusicDetailsFromDatabase(mood)
             
+        }).catch(error => {
+            console.error("Error while detection face: ", error);
+             alertify.error('Show Your Face again');
         });
     });
 }
