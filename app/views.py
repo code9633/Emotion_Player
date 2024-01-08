@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-import cv2
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from .forms import UserRegistrationForm, UserLoginForm
-from .image2emotion import ImageEmotionAnalyzer 
-
-from .models import Songs
+from app.detect import ImageEmotionAnalyzer
+from app.models import Songs
 
 
 def userRegistration(request):
@@ -44,7 +45,7 @@ def userLogin(request):
                 login(request, user)
                 messages.success(request, 'Login successful')
                 messages.info(request, "Show your face")
-                return redirect('camera')
+                return redirect('/')
 
             except Exception as e:
                 messages.error(request, 'Error during login: ' + str(e))
@@ -63,37 +64,25 @@ def userLogin(request):
     })
 
 
-@login_required
-def getEmotion(request):
-      
-    if request.method == 'POST':
-        try:        
-            capturedImage = request.POST.get('captured_image', '')
-  
-            getEmotion = ImageEmotionAnalyzer(capturedImage)
-            emotion = getEmotion.image2emotion()
-        
-            if emotion is not None:   
-                emotion = int(emotion)
-                label = { 0: "Happy", 1: "Happy", 2: "Happy", 3:"Happy"}
-                messages.success(request, 'You are in'+ label[emotion])
-                return render(request, 'home.html', {"emotion": emotion})
-                
-            else :
-                messages.error(request, "Face not detected")
-                return redirect('camera')
-            
-        except cv2.error as e:
-            messages.error(request, "Error processing image")
-            return redirect('camera')
-        
-    return render(request, "camera.html") 
-      
-       
+@csrf_exempt
+def expression(request):
+    uri = json.loads(request.body).get("image_uri")
+    print(uri)
+    getEmotion = ImageEmotionAnalyzer(uri)
+    expression = getEmotion.image2emotion()
+    print(expression)
+    return JsonResponse({"mood": expression})
+
+def get_music_details(request):
+    mood = request.GET.get('mood','')
+    songs = Songs.objects.filter(emotion = mood).values(
+        'id', 'songName', 'artist', 'coverImage', 'audioFile', 'duration'
+    )
+    return JsonResponse(list(songs), safe=False)
 
 @login_required
-def home(request):
-    return render(request, "home.html")
+def index (request):
+    return render(request, "main.html")
 
 def userLogout(request):
     logout(request)

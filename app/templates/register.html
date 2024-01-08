@@ -1,4 +1,4 @@
-{%extends 'public/index.html'%}
+{%extends 'public/base.html'%}
 
 {% block css %}
 {% load static %}
@@ -6,6 +6,8 @@
 {% endblock %}
 
 {%block content%}
+
+<div class="mainContainer">
 
     <div class="forms-container">
         <div class="signin-signup">
@@ -91,6 +93,7 @@
             <img src="{% static 'images/register.svg'%}" class="image" alt="" />
         </div>
     </div>
+</div>
 
 {% endblock %}
 
