@@ -48,7 +48,7 @@ class ImageEmotionAnalyzer:
                 emotionNumber = np.argmax(predict_emotion)
                 
         print("Emtion number is ", emotionNumber)
-        label = { 0: "Happy", 1: "Happy", 2: "Happy", 3:"Happy"}
+        label = { 0: "Angry", 1: "Happy", 2: "Sad", 3:"Neutral"}
         mood = label[int(emotionNumber)]
         
         return mood
